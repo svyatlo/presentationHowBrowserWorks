@@ -6,8 +6,8 @@
 
 		<title>reveal.js</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="./css/reveal.css">
+		<link rel="stylesheet" href="./css/theme/league.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -24,13 +24,169 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<h1>How browser works?</h1>
+				</section>
+				<section>
+					<h3>Browser components</h3>
+					<img style="border: none; width: 80%" src="img/browser_components.png" />
+				</section>
+				<section>
+					<section>
+						<h2>Rendering engine</h2>
+						<p>Rendering engine is responsible for the parsing html and present it on the screen</p>
+					</section>
+					<section>
+						<h2>Different browsers use different rendering engines:</h2>
+						<div style="display: flex; align-content: center; justify-content:space-between">
+							<ul style="list-style: none">
+								<li>Internet Explorer</li>
+								<li>Firefox</li>
+								<li>Safari</li>
+								<li>Chrome, Opera</li>
+							</ul>
+							<ul style="list-style: none">
+								<li>- Trident</li>
+								<li>- Gecko</li>
+								<li>- WebKit</li>
+								<li>- Blink, a fork of WebKit</li>
+							</ul>
+						</div>
+					</section>
+					<section>
+						<h2>The rendering engine</h2>
+						<p>...is getting the contents of the requested document from the 
+							networking layer.</p>
+						<p>This will usually be done in 8kB chunks.</p>
+					</section>
+				</section>
+				<section>
+					<h2>What happens when the requested resourses are loaded?</h2>
+					<ul>
+						<li>parsing the HTML</li>
+						<li>creating the DOM tree</li>
+						<li>creating the Render tree</li>
+						<li>layout of the Render tree</li>
+						<li>painting</li>
+					</ul>
+				</section>
+				<section>
+					<section>
+						<h2>Parsing</h2>
+						<p>Parsing a document means translating it to a structure the code can use.</p>
+						<p>The result of parsing is usually a tree of nodes that represent the structure of the document.</p>
+						<p>This is called a parse tree or a syntax tree.</p>
+					</section>
+					<section>
+						<h2>Parsing HTML</h2>
+						<p>...is turning the HTML text into the DOM elements tree</p>
+						<p>The DOM has an almost one-to-one relation to the markup</p>
+					</section>
+					<section>
+						<h2>Example of HTML</h2>
+							<img style="border: none; width: 80%" src="img/HTML_example.png" />
+					</section>
+					<section>
+						<h2>DOM tree</h2>
+						<img style="border: none; width: 60%" src="img/DOM_tree.png" />
+					</section>
+					<section>
+						<h2>Is parsing HTML is complicated?</h2>
+						<ul>
+							<li style="padding-bottom: 25px"><span style="font-weight: bold; color: blueviolet">HTML is very flexible</span>
+								(browser will fix all the author's errors in HTML and presents  it on the screen correctly)
+							</li>
+							<li><span style="font-weight: bold; color: blueviolet">the parsing process is reentrant</span>
+								(if script elements contain <span style="color: seagreen">document.write()</span> 
+								calls it can change HTML by adding extra tokens, so the parsing process modifies the input)
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h2>The parsing algorithm consists of two stages:</h2>
+						<ul>
+							<li style="padding-bottom: 25px">
+								<span style="font-weight: bold; color: blueviolet">tokenization</span> 
+								is the lexical analysis, parsing the input into tokens. 
+								(start tags, end tags, attribute names and attribute values)
+							</li>
+							<li><span style="font-weight: bold; color: blueviolet">tree construction</span>
+								(during this stage the DOM tree with the Document in its root
+								will be modified and elements will be added to it)
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Parsing flow</h2>
+						<img style="border: none; width: 50%" src="img/parsing_flow.png" />
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Render tree</h2>
+						<p>..is a visual representation of the document (for each HTML tag is created a render box with the correspondent 
+							CSS rules)
+						</p>
+						<p>Computation of the rules according to the cascading order: user style sheets, inline styles, author style sheets,
+							browser defaults
+						</p>
+					</section>
+					<section>
+						<h2>Render tree</h2>
+						<img style="width: 80%; border: none;" src="img/Render_tree.png" />
+					</section>
+					<section>
+						<h2>Non-visual DOM elements will not be inserted in the render tree</h2>
+						<ul>
+							<li>"head" elements</li>
+							<li>display: none</li>
+							<li>position: absolute</li>
+							<li>position: relative</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<h2>Layout</h2>
+					<ul style="list-style: none">
+						<li style="padding-bottom: 25px">..giving size and position to the render tree boxes</li>
+						<li style="padding-bottom: 25px">..root node position is left = 0, top = 0 and its dimentions are
+							the <span style="font-weight: bold; color: blueviolet">viewport</span>
+						</li>
+						<li style="padding-bottom: 25px">..recursive - the parent box calls the child nodes to calculate their height</li>
+						<li>..it than adds child nodes' heights, paddings and margins to set its own height</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Painting</h2>
+					<ul style="list-style: none">
+						<li style="padding-bottom: 25px">..is carried out by UI infrastructure component.</li>
+						<li style="padding-bottom: 25px">Browser goes through the render tree calling each node to paint itself</li>
+						<li style="padding-bottom: 25px">If some render boxes have a third dimension (z-index), browser paint them bottom up</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Re-layout and repaint</h2>
+					<ul style="list-style: none">
+						<li style="padding-bottom: 25px">Browser try to minimaze the changes</li>
+						<li style="padding-bottom: 25px">Non geometric changes will trigger only repaint</li>
+						<li>Changes like window resize or adding and hiding elements and resizing by script will
+							trigger re-layout
+						</li>
+					</ul>
+				</section>
+				<section>
+					<video controls="controls" width="100%" height="100%">
+							<source src="video/videoplayback.mp4">
+					</video>
+				</section>
+				<section>
+					<h2>Thank you</h2>
+				</section>
 			</div>
 		</div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+		<script src="./lib/js/head.min.js"></script>
+		<script src="./js/reveal.js"></script>
 
 		<script>
 			// More info about config & dependencies:
